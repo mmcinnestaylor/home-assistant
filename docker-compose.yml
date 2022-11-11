@@ -19,9 +19,10 @@ services:
     container_name: nginx-proxy-acme
     environment:
       DEFAULT_EMAIL: mmcinnestaylor@gmail.com
-    volumes_from:
-      - nginx-proxy
     volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
       - certs:/etc/nginx/certs:rw
       - acme:/etc/acme.sh
       - /var/run/docker.sock:/var/run/docker.sock:ro
