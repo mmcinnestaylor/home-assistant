@@ -13,6 +13,9 @@ services:
       - html:/usr/share/nginx/html
       - certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - acme
+      - backend
     restart: unless-stopped
   acme-companion:
     image: nginxproxy/acme-companion:latest
@@ -28,6 +31,8 @@ services:
       - certs:/etc/nginx/certs:rw
       - acme:/etc/acme.sh
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - acme
     restart: unless-stopped
   home-assistant:
     image: homeassistant/home-assistant:latest
@@ -44,6 +49,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
     ports:
       - 8123:8123
+    networks:
+      - backend
     network_mode: host
     restart: unless-stopped
 volumes:
@@ -53,6 +60,7 @@ volumes:
   certs:
   acme:
 networks:
-  default:
-    external:
-      name: nginx-proxy
+    acme:
+        name: acme
+    backend:
+        name: proxied-apps
