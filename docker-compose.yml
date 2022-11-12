@@ -1,66 +1,16 @@
 version: '3'
 
 services:
-  nginx-proxy:
-    image: nginxproxy/nginx-proxy:latest
-    container_name: nginx-proxy
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - conf:/etc/nginx/conf.d
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-      - certs:/etc/nginx/certs:ro
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-    networks:
-      - acme
-      - backend
-    restart: unless-stopped
-  acme-companion:
-    image: nginxproxy/acme-companion:latest
-    container_name: nginx-proxy-acme
-    depends_on:
-      - nginx-proxy
-    environment:
-      DEFAULT_EMAIL: mmcinnestaylor@gmail.com
-      NGINX_PROXY_CONTAINER: nginx-proxy
-    volumes:
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-      - certs:/etc/nginx/certs:rw
-      - acme:/etc/acme.sh
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    networks:
-      - acme
-    restart: unless-stopped
   home-assistant:
     image: homeassistant/home-assistant:latest
     container_name: homeassistant
     privileged: true
-    environment:
-      VIRTUAL_PORT: 8123
-      VIRTUAL_HOST: domi.mmcinnestaylor.com
-      LETSENCRYPT_HOST: domi.mmcinnestaylor.com
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
     volumes:
       - ./config:/config
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - 8123:8123
-    networks:
-      - backend
+      - 80:8123
     network_mode: host
     restart: unless-stopped
-volumes:
-  conf:
-  vhost:
-  html:
-  certs:
-  acme:
-networks:
-    acme:
-        name: acme
-    backend:
-        name: proxied-apps
