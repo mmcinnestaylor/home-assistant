@@ -10,6 +10,13 @@ frontend:
 tts:
   - platform: google_translate
 
+# Device Tracker
+device_tracker:
+  - platform: ddwrt
+    host: ROUTER_IP_ADDRESS
+    username: YOUR_ADMIN_USERNAME
+    password: YOUR_ADMIN_PASSWORD
+
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
