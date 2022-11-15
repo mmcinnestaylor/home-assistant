@@ -17,6 +17,23 @@ device_tracker:
     username: YOUR_ADMIN_USERNAME
     password: YOUR_ADMIN_PASSWORD
 
+# Sensors
+sensor:
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+      - type: load_1m
+      - type: load_5m
+      - type: load_15m
+      - type: memory_use_percent
+      - type: swap_use_percent
+      - type: network_in
+        arg: eth0
+      - type: network_out
+        arg: eth0
+      - type: processor_use
+      - type: processor_temperature
+
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
