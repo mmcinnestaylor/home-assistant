@@ -27,9 +27,9 @@ sensor:
       - type: load_15m
       - type: memory_use_percent
       - type: swap_use_percent
-      - type: network_in
+      - type: throughput_network_in
         arg: eth0
-      - type: network_out
+      - type: throughput_network_out
         arg: eth0
       - type: processor_use
       - type: processor_temperature
